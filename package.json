@@ -1,0 +1,28 @@
+{
+  "name": "discord-blvck-dlphn-investment-crm",
+  "version": "1.0.0",
+  "description": "Full-stack wholesale Discord CRM for real estate investment automation",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server:dev\" \"npm run client:dev\"",
+    "server:dev": "cd server && npm run dev",
+    "client:dev": "cd client && npm run dev",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "bot:dev": "cd discord-bot && npm run dev"
+  },
+  "keywords": [
+    "discord",
+    "crm",
+    "real-estate",
+    "wholesale",
+    "investment",
+    "automation"
+  ],
+  "author": "BLVCK DLPHN INVESTMENTS",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

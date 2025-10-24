@@ -1,0 +1,25 @@
+{
+  "name": "discord-crm-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for BLVCK DLPHN Investment CRM",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "nodemon bot.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "mongoose": "^8.0.3",
+    "moment": "^2.29.4",
+    "node-cron": "^3.0.3",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "keywords": ["discord", "bot", "crm", "real-estate", "investment"],
+  "author": "BLVCK DLPHN",
+  "license": "MIT"
+}
