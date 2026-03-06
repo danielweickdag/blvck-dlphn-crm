@@ -18,6 +18,11 @@ const connectDB = require('./config/database');
 const authRoutes = require('./routes/auth');
 const dealRoutes = require('./routes/deals');
 const propertyRoutes = require('./routes/properties');
+const tradingRoutes = require('./routes/trading');
+
+// Services
+const TradingEngine = require('./services/tradingEngine');
+const newsService = require('./services/newsService');
 
 // Connect to database
 connectDB();
@@ -65,6 +70,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/deals', dealRoutes);
 app.use('/api/properties', propertyRoutes);
+app.use('/api/trading', tradingRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
@@ -190,8 +196,45 @@ io.on('connection', (socket) => {
   });
 });
 
+// Initialize Trading Engine
+const tradingEngine = new TradingEngine(io);
+app.locals.tradingEngine = tradingEngine;
+
+// Start services after database connection
+const startServices = async () => {
+  try {
+    // Initialize trading engine
+    await tradingEngine.initialize();
+    tradingEngine.start();
+
+    // Start news monitoring (every 5 minutes)
+    if (process.env.ENABLE_NEWS_MONITORING === 'true') {
+      await newsService.startMonitoring(5 * 60 * 1000);
+      console.log('News monitoring started'.green);
+    }
+
+    console.log('Trading services initialized successfully'.green);
+  } catch (error) {
+    console.error('Error starting trading services:', error.message);
+  }
+};
+
 const PORT = process.env.PORT || 5001;
 
 server.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold);
+
+  // Start trading services
+  startServices();
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, shutting down gracefully...');
+  tradingEngine.stop();
+  newsService.stopMonitoring();
+  server.close(() => {
+    console.log('Server closed');
+    process.exit(0);
+  });
 });
