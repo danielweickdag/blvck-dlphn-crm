@@ -99,6 +99,30 @@ const Sidebar = ({ open, onClose }) => {
     },
   ];
 
+  const autoTradingItems = [
+    {
+      text: 'Auto Trader',
+      icon: <TrendingUp />,
+      path: '/auto-trader',
+      description: 'Live Trading Dashboard',
+      color: 'success',
+    },
+    {
+      text: 'Trade History',
+      icon: <Assessment />,
+      path: '/trade-history',
+      description: 'All Trades & P&L',
+      color: 'info',
+    },
+    {
+      text: 'Trading Config',
+      icon: <Build />,
+      path: '/trading-settings',
+      description: 'Bot Settings & Risk',
+      color: 'warning',
+    },
+  ];
+
   const toolsAndSettings = [
     {
       text: 'Profit Calculator',
@@ -224,6 +248,57 @@ const Sidebar = ({ open, onClose }) => {
                         '& .MuiChip-label': { px: 0.5 },
                       }}
                     />
+                  </Box>
+                }
+                secondary={item.description}
+                secondaryTypographyProps={{
+                  fontSize: '0.7rem',
+                  color: 'text.secondary',
+                }}
+              />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+
+      <Divider sx={{ mx: 2, my: 1 }} />
+
+      {/* Auto Trading */}
+      <Box sx={{ px: 2, py: 1 }}>
+        <Typography variant="overline" color="text.secondary" fontWeight="bold">
+          Auto Trading
+        </Typography>
+      </Box>
+
+      <List dense>
+        {autoTradingItems.map((item) => (
+          <ListItem key={item.text} disablePadding>
+            <ListItemButton
+              onClick={() => handleNavigation(item.path)}
+              selected={isActive(item.path)}
+              sx={{
+                mx: 1,
+                mb: 0.5,
+                borderRadius: 2,
+                minHeight: 48,
+                '&.Mui-selected': {
+                  bgcolor: 'rgba(0, 230, 118, 0.12)',
+                },
+                '&:hover': {
+                  bgcolor: 'rgba(0, 230, 118, 0.06)',
+                },
+              }}
+            >
+              <ListItemIcon sx={{ minWidth: 36, color: isActive(item.path) ? '#00e676' : 'text.secondary' }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Typography variant="body2" fontWeight={isActive(item.path) ? 600 : 400}
+                      sx={{ color: isActive(item.path) ? '#00e676' : 'text.primary' }}>
+                      {item.text}
+                    </Typography>
                   </Box>
                 }
                 secondary={item.description}

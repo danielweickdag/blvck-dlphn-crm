@@ -18,6 +18,10 @@ const connectDB = require('./config/database');
 const authRoutes = require('./routes/auth');
 const dealRoutes = require('./routes/deals');
 const propertyRoutes = require('./routes/properties');
+const tradingRoutes = require('./routes/trading');
+
+// Trading engine
+const tradingEngine = require('./services/tradingEngine');
 
 // Connect to database
 connectDB();
@@ -65,6 +69,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/deals', dealRoutes);
 app.use('/api/properties', propertyRoutes);
+app.use('/api/trading', tradingRoutes);
 
 // Basic route
 app.get('/', (req, res) => {
@@ -116,6 +121,9 @@ app.use((err, req, res, next) => {
 app.use('*', (req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
+
+// Initialize trading engine with Socket.IO
+tradingEngine.setIO(io);
 
 // Socket.IO connection handling
 const connectedUsers = new Map();
@@ -176,6 +184,12 @@ io.on('connection', (socket) => {
 
   socket.on('property_analysis_completed', (data) => {
     socket.emit('analysis_progress', { status: 'completed', ...data });
+  });
+
+  // Handle trading bot subscription
+  socket.on('subscribe_trading', (userId) => {
+    socket.join(`user_${userId}`);
+    console.log(`User ${socket.id} subscribed to trading updates`.cyan);
   });
 
   // Handle disconnection

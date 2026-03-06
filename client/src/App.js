@@ -14,6 +14,9 @@ import Properties from './pages/Properties';
 import Analytics from './pages/Analytics';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
+import AutoTrader from './pages/AutoTrader';
+import TradeHistory from './pages/TradeHistory';
+import TradingSettings from './pages/TradingSettings';
 
 // Context
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -188,6 +191,36 @@ function App() {
                     <ProtectedRoute>
                       <Layout>
                         <Settings />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/auto-trader"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <AutoTrader />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/trade-history"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <TradeHistory />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/trading-settings"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <TradingSettings />
                       </Layout>
                     </ProtectedRoute>
                   }
